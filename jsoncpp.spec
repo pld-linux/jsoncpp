@@ -2,8 +2,8 @@
 # Conditional build:
 %bcond_without	tests		# build without tests
 
-%define	svnrev  251
-%define	svndate 20120626
+%define	svnrev  275
+%define	svndate 20131207
 Summary:	API for manipulating JSON
 Name:		jsoncpp
 Version:	0.6.0
@@ -15,7 +15,7 @@ URL:		http://jsoncpp.sourceforge.net/
 # svn export https://jsoncpp.svn.sourceforge.net/svnroot/jsoncpp/trunk/jsoncpp jsoncpp
 # tar cfj jsoncpp-20120626svn249.tar.bz2 jsoncpp
 Source0:	%{name}-%{svndate}svn%{svnrev}.tar.bz2
-# Source0-md5:	cc7964a0787959111ef3d9965287dd3e
+# Source0-md5:	82a3375d3aa03474c2aad13dc8d48648
 Source1:	%{name}.pc
 Patch0:		%{name}-optflags.patch
 BuildRequires:	scons
