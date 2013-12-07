@@ -39,7 +39,7 @@ Headers and libraries for JSONCPP.
 %patch0 -p1
 %{__sed} -i -e '
 	s|g++|%{__cxx}| # FIXME: still does not work
-	s|@@OPTFLAGS@@|%{rpmcxxflags}|
+	s|@@OPTFLAGS@@|%{rpmcxxflags} -fno-inline-small-functions|
 ' SConstruct
 
 %build
