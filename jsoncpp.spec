@@ -7,7 +7,7 @@
 Summary:	API for manipulating JSON
 Name:		jsoncpp
 Version:	0.6.0
-Release:	0.2.%{svndate}svn%{svnrev}
+Release:	0.%{svndate}svn%{svnrev}.1
 License:	MIT or Public Domain
 Group:		Libraries
 URL:		http://jsoncpp.sourceforge.net/
