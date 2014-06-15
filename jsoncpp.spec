@@ -1,16 +1,17 @@
 #
 # Conditional build:
-%bcond_without	tests		# build without tests
+%bcond_without	apidocs	# doxygen apidocs build
+%bcond_without	tests	# "scons check" run
 
 %define	svnrev  275
 %define	svndate 20131207
 Summary:	API for manipulating JSON
+Summary(pl.UTF-8):	API do operacji na strukturach JSON
 Name:		jsoncpp
 Version:	0.6.0
 Release:	0.%{svndate}svn%{svnrev}.1
 License:	MIT or Public Domain
 Group:		Libraries
-URL:		http://jsoncpp.sourceforge.net/
 # Need to use svn.
 # svn export https://jsoncpp.svn.sourceforge.net/svnroot/jsoncpp/trunk/jsoncpp jsoncpp
 # tar cfj jsoncpp-20120626svn249.tar.bz2 jsoncpp
@@ -18,21 +19,47 @@ Source0:	%{name}-%{svndate}svn%{svnrev}.tar.bz2
 # Source0-md5:	82a3375d3aa03474c2aad13dc8d48648
 Source1:	%{name}.pc
 Patch0:		%{name}-optflags.patch
+URL:		http://jsoncpp.sourceforge.net/
+BuildRequires:	libstdc++-devel
+BuildRequires:	python >= 2
 BuildRequires:	scons
 BuildRequires:	sed >= 4.0
+%if %{with apidocs}
+BuildRequires:	doxygen
+BuildRequires:	graphviz
+%endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 JSONCPP provides a simple API to manipulate JSON values, and handle
 serialization and unserialization to strings.
 
+%description
+JSONCPP udostępnia proste API do operacji na wartościach JSON oraz
+obsługi serializacji oraz deserializacji z łańcuchów znaków.
+
 %package devel
-Summary:	Headers	and libraries for JSONCPP
+Summary:	Header files for JSONCPP library
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki JSONCPP
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description devel
-Headers and libraries for JSONCPP.
+Header files for JSONCPP library.
+
+%description devel -l pl.UTF-8
+Pliki nagłówkowe biblioteki JSONCPP.
+
+%package apidocs
+Summary:	API documentation for JSONCPP library
+Summary(pl.UTF-8):	Dokumentacja API biblioteki JSONCPP
+Group:		Documentation
+
+%description apidocs
+API documentation for JSONCPP library.
+
+%description apidocs -l pl.UTF-8
+Dokumentacja API biblioteki JSONCPP.
 
 %prep
 %setup -q -n %{name}
@@ -53,6 +80,12 @@ Headers and libraries for JSONCPP.
 scons platform=linux-gcc check
 %endif
 
+%if %{with apidocs}
+%{__python} doxybuild.py \
+	--dot=/usr/bin/dot \
+	--doxygen=/usr/bin/doxygen
+%endif
+
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_libdir},%{_includedir}/jsoncpp,%{_pkgconfigdir}}
@@ -66,18 +99,23 @@ ln -s $(basename $RPM_BUILD_ROOT%{_libdir}/libjsoncpp.so.*.*.*) $RPM_BUILD_ROOT%
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS NEWS.txt README.txt version
+%doc AUTHORS LICENSE NEWS.txt README.txt
 %attr(755,root,root) %{_libdir}/libjsoncpp.so.0.0.0
-%ghost %{_libdir}/libjsoncpp.so.0
+%attr(755,root,root) %ghost %{_libdir}/libjsoncpp.so.0
 
 %files devel
 %defattr(644,root,root,755)
-%doc doc/*
+%attr(755,root,root) %{_libdir}/libjsoncpp.so
 %{_includedir}/jsoncpp
-%{_libdir}/libjsoncpp.so
 %{_pkgconfigdir}/jsoncpp.pc
+
+%if %{with apidocs}
+%files apidocs
+%defattr(644,root,root,755)
+%doc dist/doxygen/jsoncpp-api-html-*/*
+%endif
