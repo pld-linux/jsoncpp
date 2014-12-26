@@ -1,29 +1,23 @@
 #
 # Conditional build:
 %bcond_without	apidocs	# doxygen apidocs build
-%bcond_without	tests	# "scons check" run
+%bcond_without	tests	# tests during build
 
-%define	svnrev  275
-%define	svndate 20131207
 Summary:	API for manipulating JSON
 Summary(pl.UTF-8):	API do operacji na strukturach JSON
 Name:		jsoncpp
-Version:	0.6.0
-Release:	0.%{svndate}svn%{svnrev}.1
+Version:	1.0.0
+Release:	1
 License:	MIT or Public Domain
 Group:		Libraries
-# Need to use svn.
-# svn export https://jsoncpp.svn.sourceforge.net/svnroot/jsoncpp/trunk/jsoncpp jsoncpp
-# tar cfj jsoncpp-20120626svn249.tar.bz2 jsoncpp
-Source0:	%{name}-%{svndate}svn%{svnrev}.tar.bz2
-# Source0-md5:	82a3375d3aa03474c2aad13dc8d48648
-Source1:	%{name}.pc
-Patch0:		%{name}-optflags.patch
-URL:		http://jsoncpp.sourceforge.net/
+Source0:	https://github.com/open-source-parsers/jsoncpp/archive/%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	4c886ac3bfccc867a79f3a5280ce1152
+Patch0:		%{name}-test.patch
+Patch1:		%{name}-libdir.patch
+URL:		https://github.com/open-source-parsers/jsoncpp/
+BuildRequires:	cmake >= 2.8.5
 BuildRequires:	libstdc++-devel
 BuildRequires:	python >= 2
-BuildRequires:	scons
-BuildRequires:	sed >= 4.0
 %if %{with apidocs}
 BuildRequires:	doxygen
 BuildRequires:	graphviz
@@ -62,23 +56,21 @@ API documentation for JSONCPP library.
 Dokumentacja API biblioteki JSONCPP.
 
 %prep
-%setup -q -n %{name}
+%setup -q
 %patch0 -p1
-%{__sed} -i -e '
-	s|g++|%{__cxx}| # FIXME: still does not work
-	s|@@OPTFLAGS@@|%{rpmcxxflags} -fno-inline-small-functions|
-' SConstruct
+%patch1 -p1
 
 %build
-%scons \
-	platform=linux-gcc
-
-# Now, lets make a proper shared lib. :P
-%{__cxx} -o libjsoncpp.so.0.0.0 -shared -Wl,-soname,libjsoncpp.so.0 buildscons/linux-gcc-*/src/lib_json/*.os -lpthread %{rpmldflags}
-
-%if %{with tests}
-scons platform=linux-gcc check
-%endif
+install -d build
+cd build
+%cmake .. \
+	-DARCHIVE_INSTALL_DIR:PATH=%{_lib} \
+	-DLIBRARY_INSTALL_DIR:PATH=%{_lib} \
+	-DPACKAGE_INSTALL_DIR:PATH=%{_lib}/cmake \
+	-DJSONCPP_LIB_BUILD_SHARED=ON \
+	-DJSONCPP_WITH_CMAKE_PACKAGE=ON \
+	%{!?with_tests:-DJSONCPP_WITH_TESTS=OFF}
+cd ..
 
 %if %{with apidocs}
 %{__python} doxybuild.py \
@@ -88,13 +80,12 @@ scons platform=linux-gcc check
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_libdir},%{_includedir}/jsoncpp,%{_pkgconfigdir}}
-install -p libjsoncpp.so.*.*.* $RPM_BUILD_ROOT%{_libdir}
-cp -a include/json $RPM_BUILD_ROOT%{_includedir}/jsoncpp
-%{__sed} -e 's|@@LIBDIR@@|%{_libdir}|g' %{SOURCE1} > $RPM_BUILD_ROOT%{_pkgconfigdir}/jsoncpp.pc
 
-/sbin/ldconfig -n $RPM_BUILD_ROOT%{_libdir}
-ln -s $(basename $RPM_BUILD_ROOT%{_libdir}/libjsoncpp.so.*.*.*) $RPM_BUILD_ROOT%{_libdir}/libjsoncpp.so
+%{__make} -C build install \
+	DESTDIR=$RPM_BUILD_ROOT
+
+# <json/*> is too common, use <jsoncpp/*>
+%{__mv} $RPM_BUILD_ROOT%{_includedir}/{json,jsoncpp}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -104,15 +95,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS LICENSE NEWS.txt README.txt
-%attr(755,root,root) %{_libdir}/libjsoncpp.so.0.0.0
-%attr(755,root,root) %ghost %{_libdir}/libjsoncpp.so.0
+%doc AUTHORS LICENSE NEWS.txt README.md
+%attr(755,root,root) %{_libdir}/libjsoncpp.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libjsoncpp.so.1
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libjsoncpp.so
 %{_includedir}/jsoncpp
 %{_pkgconfigdir}/jsoncpp.pc
+%{_libdir}/cmake/jsoncpp
 
 %if %{with apidocs}
 %files apidocs

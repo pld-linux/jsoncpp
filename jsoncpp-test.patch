@@ -1,0 +1,11 @@
+--- jsoncpp-1.0.0/src/test_lib_json/main.cpp.orig	2014-11-20 15:45:58.000000000 +0100
++++ jsoncpp-1.0.0/src/test_lib_json/main.cpp	2014-12-25 22:06:20.003476014 +0100
+@@ -661,7 +661,7 @@
+   JSONTEST_ASSERT_EQUAL(kint32max, val.asUInt());
+   JSONTEST_ASSERT_EQUAL(kint32max, val.asLargestUInt());
+   JSONTEST_ASSERT_EQUAL(kint32max, val.asDouble());
+-  JSONTEST_ASSERT_EQUAL(kfint32max, val.asFloat());
++  JSONTEST_ASSERT_EQUAL(kint32max, (int)val.asFloat());
+   JSONTEST_ASSERT_EQUAL(true, val.asBool());
+   JSONTEST_ASSERT_STRING_EQUAL("2147483647", val.asString());
+ 
