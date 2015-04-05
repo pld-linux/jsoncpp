@@ -42,6 +42,18 @@ Header files for JSONCPP library.
 %description devel -l pl.UTF-8
 Pliki nagłówkowe biblioteki JSONCPP.
 
+%package static
+Summary:	Static JSONCPP library
+Summary(pl.UTF-8):	Statyczna biblioteka JSONCPP
+Group:		Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+
+%description static
+Static JSONCPP library.
+
+%description static -l pl.UTF-8
+Statyczna biblioteka JSONCPP.
+
 %package apidocs
 Summary:	API documentation for JSONCPP library
 Summary(pl.UTF-8):	Dokumentacja API biblioteki JSONCPP
@@ -101,6 +113,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/jsoncpp
 %{_pkgconfigdir}/jsoncpp.pc
 %{_libdir}/cmake/jsoncpp
+
+%files static
+%defattr(644,root,root,755)
+%{_libdir}/libjsoncpp.a
 
 %if %{with apidocs}
 %files apidocs
