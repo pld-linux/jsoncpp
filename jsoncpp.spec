@@ -6,12 +6,12 @@
 Summary:	API for manipulating JSON
 Summary(pl.UTF-8):	API do operacji na strukturach JSON
 Name:		jsoncpp
-Version:	1.6.0
+Version:	1.6.2
 Release:	1
 License:	MIT or Public Domain
 Group:		Libraries
 Source0:	https://github.com/open-source-parsers/jsoncpp/archive/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	51b47ef5bfc95bf2388c1ace864b4453
+# Source0-md5:	5a62da8b5c5b0e46a0e782e7363aee3d
 URL:		https://github.com/open-source-parsers/jsoncpp/
 BuildRequires:	cmake >= 2.8.5
 BuildRequires:	libstdc++-devel
