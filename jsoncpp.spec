@@ -7,7 +7,7 @@ Summary:	API for manipulating JSON
 Summary(pl.UTF-8):	API do operacji na strukturach JSON
 Name:		jsoncpp
 Version:	1.6.2
-Release:	3
+Release:	4
 License:	MIT or Public Domain
 Group:		Libraries
 Source0:	https://github.com/open-source-parsers/jsoncpp/archive/%{version}/%{name}-%{version}.tar.gz
@@ -58,6 +58,9 @@ Statyczna biblioteka JSONCPP.
 Summary:	API documentation for JSONCPP library
 Summary(pl.UTF-8):	Dokumentacja API biblioteki JSONCPP
 Group:		Documentation
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description apidocs
 API documentation for JSONCPP library.
