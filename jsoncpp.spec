@@ -6,14 +6,15 @@
 Summary:	API for manipulating JSON
 Summary(pl.UTF-8):	API do operacji na strukturach JSON
 Name:		jsoncpp
-Version:	1.6.2
-Release:	4
+Version:	1.8.0
+Release:	1
 License:	MIT or Public Domain
 Group:		Libraries
+#Source0Download: https://github.com/open-source-parsers/jsoncpp/releases
 Source0:	https://github.com/open-source-parsers/jsoncpp/archive/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	5a62da8b5c5b0e46a0e782e7363aee3d
+# Source0-md5:	6d6cbd82b5fe4a9cbae4ffef01f9e9fc
 URL:		https://github.com/open-source-parsers/jsoncpp/
-BuildRequires:	cmake >= 2.8.5
+BuildRequires:	cmake >= 3.1
 BuildRequires:	libstdc++-devel
 BuildRequires:	python >= 2
 %if %{with apidocs}
@@ -75,11 +76,7 @@ Dokumentacja API biblioteki JSONCPP.
 install -d build
 cd build
 %cmake .. \
-	-DINCLUDE_INSTALL_DIR:PATH=%{_includedir}/%{name} \
-	-DARCHIVE_INSTALL_DIR:PATH=%{_lib} \
-	-DLIBRARY_INSTALL_DIR:PATH=%{_lib} \
-	-DPACKAGE_INSTALL_DIR:PATH=%{_lib}/cmake \
-	-DJSONCPP_LIB_BUILD_SHARED=ON \
+	-DCMAKE_INSTALL_INCLUDEDIR:PATH=%{_includedir}/%{name} \
 	-DJSONCPP_WITH_CMAKE_PACKAGE=ON \
 	%{!?with_tests:-DJSONCPP_WITH_TESTS=OFF}
 cd ..
@@ -106,7 +103,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS LICENSE NEWS.txt README.md
 %attr(755,root,root) %{_libdir}/libjsoncpp.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libjsoncpp.so.1
+%attr(755,root,root) %ghost %{_libdir}/libjsoncpp.so.11
 
 %files devel
 %defattr(644,root,root,755)
