@@ -6,13 +6,13 @@
 Summary:	API for manipulating JSON
 Summary(pl.UTF-8):	API do operacji na strukturach JSON
 Name:		jsoncpp
-Version:	1.8.0
+Version:	1.8.4
 Release:	1
 License:	MIT or Public Domain
 Group:		Libraries
 #Source0Download: https://github.com/open-source-parsers/jsoncpp/releases
 Source0:	https://github.com/open-source-parsers/jsoncpp/archive/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	6d6cbd82b5fe4a9cbae4ffef01f9e9fc
+# Source0-md5:	fa47a3ab6b381869b6a5f20811198662
 URL:		https://github.com/open-source-parsers/jsoncpp/
 BuildRequires:	cmake >= 3.1
 BuildRequires:	libstdc++-devel
@@ -78,7 +78,8 @@ cd build
 %cmake .. \
 	-DCMAKE_INSTALL_INCLUDEDIR:PATH=%{_includedir}/%{name} \
 	-DJSONCPP_WITH_CMAKE_PACKAGE=ON \
-	%{!?with_tests:-DJSONCPP_WITH_TESTS=OFF}
+	%{!?with_tests:-DJSONCPP_WITH_TESTS=OFF} \
+	-DSTATIC_SUFFIX=
 cd ..
 
 %if %{with apidocs}
@@ -101,9 +102,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS LICENSE NEWS.txt README.md
+%doc AUTHORS LICENSE README.md
 %attr(755,root,root) %{_libdir}/libjsoncpp.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libjsoncpp.so.11
+%attr(755,root,root) %ghost %{_libdir}/libjsoncpp.so.19
 
 %files devel
 %defattr(644,root,root,755)
