@@ -59,9 +59,7 @@ Statyczna biblioteka JSONCPP.
 Summary:	API documentation for JSONCPP library
 Summary(pl.UTF-8):	Dokumentacja API biblioteki JSONCPP
 Group:		Documentation
-%if "%{_rpmversion}" >= "5"
 BuildArch:	noarch
-%endif
 
 %description apidocs
 API documentation for JSONCPP library.
