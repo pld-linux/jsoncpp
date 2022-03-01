@@ -7,7 +7,7 @@ Summary:	API for manipulating JSON
 Summary(pl.UTF-8):	API do operacji na strukturach JSON
 Name:		jsoncpp
 Version:	1.8.4
-Release:	1
+Release:	2
 License:	MIT or Public Domain
 Group:		Libraries
 #Source0Download: https://github.com/open-source-parsers/jsoncpp/releases
@@ -16,7 +16,7 @@ Source0:	https://github.com/open-source-parsers/jsoncpp/archive/%{version}/%{nam
 URL:		https://github.com/open-source-parsers/jsoncpp/
 BuildRequires:	cmake >= 3.1
 BuildRequires:	libstdc++-devel
-BuildRequires:	python >= 2
+BuildRequires:	python3
 %if %{with apidocs}
 BuildRequires:	doxygen
 BuildRequires:	graphviz
@@ -81,7 +81,7 @@ cd build
 cd ..
 
 %if %{with apidocs}
-%{__python} doxybuild.py \
+%{__python3} doxybuild.py \
 	--dot=/usr/bin/dot \
 	--doxygen=/usr/bin/doxygen
 %endif
