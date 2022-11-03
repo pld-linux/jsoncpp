@@ -81,6 +81,7 @@ cd build
 	%{!?with_tests:-DJSONCPP_WITH_TESTS=OFF} \
 	-DSTATIC_SUFFIX=
 cd ..
+%{__make} -C build
 
 %if %{with apidocs}
 ln -sf build/version .
