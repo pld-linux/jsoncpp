@@ -17,6 +17,7 @@ URL:		https://github.com/open-source-parsers/jsoncpp/
 BuildRequires:	cmake >= 3.8.0
 BuildRequires:	libstdc++-devel >= 6:4.8.1
 BuildRequires:	python3
+BuildRequires:	rpmbuild(macros) >= 1.605
 %if %{with apidocs}
 BuildRequires:	doxygen
 BuildRequires:	graphviz
