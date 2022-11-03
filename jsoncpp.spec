@@ -6,16 +6,16 @@
 Summary:	API for manipulating JSON
 Summary(pl.UTF-8):	API do operacji na strukturach JSON
 Name:		jsoncpp
-Version:	1.8.4
-Release:	2
+Version:	1.9.5
+Release:	1
 License:	MIT or Public Domain
 Group:		Libraries
 #Source0Download: https://github.com/open-source-parsers/jsoncpp/releases
 Source0:	https://github.com/open-source-parsers/jsoncpp/archive/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	fa47a3ab6b381869b6a5f20811198662
+# Source0-md5:	d6c8c609f2162eff373db62b90a051c7
 URL:		https://github.com/open-source-parsers/jsoncpp/
-BuildRequires:	cmake >= 3.1
-BuildRequires:	libstdc++-devel
+BuildRequires:	cmake >= 3.8.0
+BuildRequires:	libstdc++-devel >= 6:4.8.1
 BuildRequires:	python3
 %if %{with apidocs}
 BuildRequires:	doxygen
@@ -102,7 +102,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS LICENSE README.md
 %attr(755,root,root) %{_libdir}/libjsoncpp.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libjsoncpp.so.19
+%attr(755,root,root) %ghost %{_libdir}/libjsoncpp.so.25
 
 %files devel
 %defattr(644,root,root,755)
