@@ -83,6 +83,7 @@ cd build
 cd ..
 
 %if %{with apidocs}
+ln -sf build/version .
 %{__python3} doxybuild.py \
 	--dot=/usr/bin/dot \
 	--doxygen=/usr/bin/doxygen
