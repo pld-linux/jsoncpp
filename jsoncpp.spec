@@ -1,18 +1,20 @@
 #
 # Conditional build:
-%bcond_without	apidocs	# doxygen apidocs build
-%bcond_without	tests	# tests during build
+%bcond_without	apidocs		# doxygen apidocs build
+%bcond_without	static_libs	# static library
+%bcond_without	tests		# tests during build
 
 Summary:	API for manipulating JSON
 Summary(pl.UTF-8):	API do operacji na strukturach JSON
 Name:		jsoncpp
 Version:	1.9.5
-Release:	2
+Release:	3
 License:	MIT or Public Domain
 Group:		Libraries
 #Source0Download: https://github.com/open-source-parsers/jsoncpp/releases
 Source0:	https://github.com/open-source-parsers/jsoncpp/archive/%{version}/%{name}-%{version}.tar.gz
 # Source0-md5:	d6c8c609f2162eff373db62b90a051c7
+Patch0:		%{name}-cmake-prefer-shared.patch
 URL:		https://github.com/open-source-parsers/jsoncpp/
 BuildRequires:	cmake >= 3.8.0
 BuildRequires:	libstdc++-devel >= 6:4.8.1
@@ -29,7 +31,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 JSONCPP provides a simple API to manipulate JSON values, and handle
 serialization and unserialization to strings.
 
-%description
+%description -l pl.UTF-8
 JSONCPP udostępnia proste API do operacji na wartościach JSON oraz
 obsługi serializacji oraz deserializacji z łańcuchów znaków.
 
@@ -71,11 +73,14 @@ Dokumentacja API biblioteki JSONCPP.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 install -d build
 cd build
 %cmake .. \
+	-DBUILD_OBJECT_LIBS=OFF \
+	%{!?with_static_libs:-DBUILD_STATIC_LIBS=OFF} \
 	-DCMAKE_INSTALL_INCLUDEDIR:PATH=%{_includedir}/%{name} \
 	-DJSONCPP_WITH_CMAKE_PACKAGE=ON \
 	%{!?with_tests:-DJSONCPP_WITH_TESTS=OFF} \
@@ -115,9 +120,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_pkgconfigdir}/jsoncpp.pc
 %{_libdir}/cmake/jsoncpp
 
+%if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libjsoncpp.a
+%endif
 
 %if %{with apidocs}
 %files apidocs

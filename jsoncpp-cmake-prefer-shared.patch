@@ -1,0 +1,16 @@
+--- jsoncpp-1.9.5/jsoncpp-namespaced-targets.cmake.orig	2021-11-03 18:53:28.000000000 +0100
++++ jsoncpp-1.9.5/jsoncpp-namespaced-targets.cmake	2023-05-10 16:21:39.573256446 +0200
+@@ -1,7 +1,7 @@
+-if (TARGET jsoncpp_static)
+-    add_library(JsonCpp::JsonCpp INTERFACE IMPORTED)
+-    set_target_properties(JsonCpp::JsonCpp PROPERTIES INTERFACE_LINK_LIBRARIES "jsoncpp_static")
+-elseif (TARGET jsoncpp_lib)
++if (TARGET jsoncpp_lib)
+     add_library(JsonCpp::JsonCpp INTERFACE IMPORTED)
+     set_target_properties(JsonCpp::JsonCpp PROPERTIES INTERFACE_LINK_LIBRARIES "jsoncpp_lib")
+-endif ()
+\ No newline at end of file
++elseif (TARGET jsoncpp_static)
++    add_library(JsonCpp::JsonCpp INTERFACE IMPORTED)
++    set_target_properties(JsonCpp::JsonCpp PROPERTIES INTERFACE_LINK_LIBRARIES "jsoncpp_static")
++endif ()
