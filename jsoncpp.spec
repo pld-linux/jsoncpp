@@ -8,7 +8,7 @@ Summary:	API for manipulating JSON
 Summary(pl.UTF-8):	API do operacji na strukturach JSON
 Name:		jsoncpp
 Version:	1.9.7
-Release:	1
+Release:	0.1
 License:	MIT or Public Domain
 Group:		Libraries
 #Source0Download: https://github.com/open-source-parsers/jsoncpp/releases
